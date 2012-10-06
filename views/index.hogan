@@ -1,0 +1,33 @@
+<!--<a href="/tunnels/new" class="pull-right btn btn-primary btn-large">
+    <i class="icon-plus-sign"></i>
+    Add Tunnel
+</a>-->
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>SSH</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#tunnels}}
+      <tr class="{{statusClass}}">
+        <td>{{name}}</td>
+        <td>{{statusText}}</td>
+        <td>{{sshHost}} {{sshLocalForward}}</td>
+        <td><form class="form" action="{{toggle}}" method="post">
+          <input type="hidden" name="id" value="{{id}}">
+          <input type="submit" class="btn btn-{{toggleClass}}" value="{{toggleText}}">
+        </form></td>
+      </tr>
+    {{/tunnels}}
+  </tbody>
+</table>
+
+<script type="text/javascript">
+setInterval(function() {
+  window.location.reload()
+}, 30 * 1000)
+</script>

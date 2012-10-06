@@ -1,0 +1,11 @@
+body {
+  padding-top: 60px;
+}
+
+.table  td {
+  vertical-align: middle;
+}
+
+.table form {
+  margin-bottom: 0;
+}

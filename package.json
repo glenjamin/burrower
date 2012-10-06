@@ -1,0 +1,24 @@
+{
+  "name": "burrower",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Tool to manage toggling tunnelling to remote services",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha",
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "3.0.0rc4",
+    "hogan-express": "~0.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/glenjamin/burrower.git"
+  },
+  "keywords": [
+    "ssh",
+    "tunnel"
+  ],
+  "author": "Glen Mailer",
+  "license": "MIT"
+}

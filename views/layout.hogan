@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Burrower {{#title}}| {{title}}{{/title}}</title>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+    <link rel='stylesheet' href='/stylesheets/font-awesome.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Burrower</a>
+          <ul class="nav">
+            <li class="active"><a href="/">Tunnels</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      {{{ yield }}}
+    </div>
+    <script src="/javascripts/jquery.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+  </body>
+</html>
