@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "express": "3.0.0rc4",
-    "hogan-express": "~0.3.2"
+    "hogan-express": "~0.3.2",
+    "duration": "~0.1.1"
   },
   "repository": {
     "type": "git",

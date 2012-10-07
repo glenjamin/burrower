@@ -7,6 +7,7 @@
     <tr>
       <th>Name</th>
       <th>Status</th>
+      <th>Uptime</th>
       <th>SSH</th>
       <th></th>
     </tr>
@@ -16,6 +17,7 @@
       <tr class="{{statusClass}}">
         <td>{{name}}</td>
         <td>{{statusText}}</td>
+        <td>{{uptime}}</td>
         <td>{{sshHost}} {{sshLocalForward}}</td>
         <td><form class="form" action="{{toggle}}" method="post">
           <input type="hidden" name="id" value="{{id}}">

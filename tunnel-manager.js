@@ -2,6 +2,7 @@ var spawn = require('child_process').spawn;
 
 var MAX_RETRIES = 10;
 var RETRY_DELAY = 500; //ms
+var STABLE_AFTER = 5000; //ms
 
 // TODO: proper persistence?
 //  - sqlite
@@ -41,19 +42,32 @@ exports.enable = function(tunnelID) {
       '-Nv',
       '-L', tunnel.sshLocalForward
     ])
+    tunnel.state = 'active';
+    tunnel.started = new Date();
+    
+    // Process established and stable
+    var stableTimer = setTimeout(function() {
+      tunnel.retries = 0;
+    }, STABLE_AFTER);
+    
     tunnel.ssh.on('exit', function(code, signal) {
-      // No Retries left? mark as broken
-      if (tunnel.retries > MAX_RETRIES) {
-        tunnel.state = 'broken';
+      // Don't mark the process as stable
+      clearTimeout(stableTimer);
+      delete tunnel.started;
+      
+      // Attempt to restart up to MAX_RETRIES times 
+      if (tunnel.retries < MAX_RETRIES) {
+        tunnel.retries += 1;
+        setTimeout(function() {
+          exports.enable(tunnelID)
+        }, RETRY_DELAY)
         return;
       }
-      // Otherwise, keep trying
-      tunnel.retries += 1;
-      setTimeout(function() {
-        exports.enable(tunnelID)
-      }, RETRY_DELAY)
+      // No Retries left. mark as broken
+      tunnel.state = 'broken';
+      tunnel.retries = 0;
     })
-    tunnel.state = 'active';
+    
   })
 }
 
