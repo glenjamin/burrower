@@ -19,9 +19,23 @@
         <td>{{statusText}}</td>
         <td>{{uptime}}</td>
         <td>{{sshHost}} {{sshLocalForward}}</td>
-        <td><form class="form" action="{{toggle}}" method="post">
+        <td><form class="form form-inline" action="{{toggle}}" method="post">
           <input type="hidden" name="id" value="{{id}}">
           <input type="submit" class="btn btn-{{toggleClass}}" value="{{toggleText}}">
+          {{#params}}
+            {{#textfield}}
+                <label for="{{name}}">{{label}}</label>
+                <input id="{{name}}" name="params[{{name}}]" value="{{value}}" class="input-small" />
+            {{/textfield}}
+            {{#select}}
+                <label for="{{name}}">{{label}}</label>
+                <select id="{{name}}" name="params[{{name}}]" class="input-small">
+                    {{#options}}
+                        <option{{#selected}} selected="selected"{{/selected}}>{{option}}</option>
+                    {{/options}}
+                </select>
+            {{/select}}
+          {{/params}}
         </form></td>
       </tr>
     {{/tunnels}}

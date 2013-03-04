@@ -23,10 +23,21 @@ tunnelData.forEach(function(tunnel) {
   tunnel.retries = 0;
 })
 
-exports.getTunnel = function(tunnelID, callback) {
+exports.getTunnel = function(tunnelID, params, callback) {
+  // params is optional
+  if (callback === undefined) {
+    callback = params;
+    params = undefined;
+  }
   tunnelData.some(function(tunnel) {
     if (tunnel.id == tunnelID) {
-      callback(tunnel);
+      if (params) {
+        tunnel.enrich(params, function() {
+          callback(tunnel);
+        });
+      } else {
+        callback(tunnel);
+      }
       return true;
     }
   })
@@ -35,8 +46,8 @@ exports.getData = function(callback) {
   callback(null, tunnelData);
 }
 
-exports.enable = function(tunnelID) {
-  exports.getTunnel(tunnelID, function(tunnel) {
+exports.enable = function(tunnelID, params, callback) {
+  exports.getTunnel(tunnelID, params, function(tunnel) {
     tunnel.ssh = spawn('ssh', [
       tunnel.sshHost,
       '-Nv',
@@ -44,6 +55,7 @@ exports.enable = function(tunnelID) {
     ])
     tunnel.state = 'active';
     tunnel.started = new Date();
+    callback();
     
     // Process established and stable
     var stableTimer = setTimeout(function() {
@@ -76,5 +88,9 @@ exports.disable = function(tunnelID) {
     tunnel.ssh.removeAllListeners('exit');
     tunnel.ssh.kill('SIGINT');
     tunnel.state = 'disabled';
+    if (tunnel.cleanup) {
+      tunnel.cleanup();
+    }
+    delete tunnel.started;
   })
 }

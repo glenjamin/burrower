@@ -39,10 +39,36 @@ module.exports = function(app, tunnelManager) {
     merge(tunnel, tunnelViewStates[tunnel.state]);
     if (tunnel.started) {
       tunnel.uptime = new Duration(tunnel.started, new Date).toString(1);
+      tunnel.params = null;
     } else {
       tunnel.uptime = 'n/a';
+      tunnel.params = buildTunnelParamsFields(tunnel);
     }
     return tunnel;
+  }
+  function buildTunnelParamsFields(tunnel) {
+    if (!tunnel.params) return;
+
+    var fields = [];
+    for (var name in tunnel.params) {
+      var param = tunnel.params[name];
+      if (param.type == 'string') {
+        fields.push({'textfield': {
+          'label': name,
+          'name': name,
+          'value': param.default,
+        }})
+      } else if (param.type == 'list') {
+        fields.push({'select': {
+          'label': name,
+          'name': name,
+          'options': param.array.map(function(option) {
+            return {'option': option, 'selected': option == param.default }
+          }),
+        }})
+      }
+    }
+    return fields;
   }
 
   app.get('/', function(req, res, next) {
@@ -55,8 +81,9 @@ module.exports = function(app, tunnelManager) {
 
   app.post('/enable', function(req, res, next) {
     var tunnelID = parseInt(req.body.id, 10);
-    tunnelManager.enable(tunnelID);
-    res.redirect('/');
+    tunnelManager.enable(tunnelID, req.body.params, function() {
+      res.redirect('/');
+    });
   })
   app.post('/disable', function(req, res, next) {
     var tunnelID = parseInt(req.body.id, 10);
