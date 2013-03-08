@@ -1,0 +1,26 @@
+// Current format:
+// {
+//   id: 1,
+//   name: 'WLP Staging MySQL',
+//   sshHost: 'staging.wlp',
+//   sshLocalForward: '3307:localhost:3306'
+//   params: {
+//     // optional list of parameters to accept
+//   },
+//   enrich: function(params, callback) {
+//     // optional
+//     // use params to modify `this`, then call callback
+//   },
+//   cleanup: function() {
+//     // optional, actions to run on disable
+//   }
+// }
+
+module.exports = [
+  {
+    id: 1,
+    name: 'Example Tunnel',
+    sshHost: 'username@example.com',
+    sshLocalForward: '8080:localhost:80',
+  }
+]
