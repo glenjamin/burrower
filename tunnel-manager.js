@@ -71,7 +71,7 @@ exports.enable = function(tunnelID, params, callback) {
       if (tunnel.retries < MAX_RETRIES) {
         tunnel.retries += 1;
         setTimeout(function() {
-          exports.enable(tunnelID)
+          exports.enable(tunnelID, params, function(){});
         }, RETRY_DELAY)
         return;
       }
